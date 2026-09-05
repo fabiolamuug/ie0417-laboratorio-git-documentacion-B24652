@@ -1,0 +1,28 @@
+# Python virtual environments
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Third-party repositories / downloaded dependencies
+third_party/
+
+# Environment variables and secrets
+.env
+.env.*
+*.pem
+*.key
+
+# IDE metadata
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Temporary build/cache directories
+_build/
+build/
+dist/
