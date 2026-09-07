@@ -59,6 +59,16 @@
     - [Niveles obligatorios de Principal](#niveles-obligatorios-de-principal)
     - [Niveles obligatorios de Remota](#niveles-obligatorios-de-remota)
     - [Niveles adicionales encontrados en la interfaz](#niveles-adicionales-encontrados-en-la-interfaz)
+  - [Síntesis de conceptos aprendidos](#síntesis-de-conceptos-aprendidos)
+  - [Análisis obligatorio de Git](#análisis-obligatorio-de-git)
+    - [1. ¿Cuál es la diferencia entre `merge` y `rebase`? ¿Qué ocurre con el historial en cada caso?](#1-cuál-es-la-diferencia-entre-merge-y-rebase-qué-ocurre-con-el-historial-en-cada-caso)
+    - [2. ¿Cuándo conviene utilizar `reset` y cuándo `revert`?](#2-cuándo-conviene-utilizar-reset-y-cuándo-revert)
+    - [3. ¿Qué significa tener `HEAD` separado o *detached*?](#3-qué-significa-tener-head-separado-o-detached)
+    - [4. ¿Qué diferencia existe entre una rama local, una rama remota y una rama de seguimiento remoto?](#4-qué-diferencia-existe-entre-una-rama-local-una-rama-remota-y-una-rama-de-seguimiento-remoto)
+    - [5. ¿Qué hacen individualmente `fetch`, `merge`, `pull` y `push`?](#5-qué-hacen-individualmente-fetch-merge-pull-y-push)
+    - [6. ¿Qué riesgos existen al reescribir un historial que ya fue compartido?](#6-qué-riesgos-existen-al-reescribir-un-historial-que-ya-fue-compartido)
+    - [7. ¿Para qué resultan útiles `cherry-pick`, las referencias relativas y los tags?](#7-para-qué-resultan-útiles-cherry-pick-las-referencias-relativas-y-los-tags)
+    - [8. ¿Qué diferencias identificó entre el simulador y un repositorio Git real?](#8-qué-diferencias-identificó-entre-el-simulador-y-un-repositorio-git-real)
 
 ---
 
@@ -2315,10 +2325,6 @@ La siguiente captura muestra todos los niveles disponibles de la sección
 
 ![Mapa completo de progreso de Remota](evidencias/remota/progreso-completo.png)
 
----
-
-<a id="resumen-de-niveles-completados"></a>
-
 ## Resumen de niveles completados
 
 La guía del laboratorio enumera 34 niveles obligatorios de Learn Git Branching:
@@ -2331,8 +2337,6 @@ laboratorio, la sección `Principal` contenía además dos niveles adicionales:
 `Área de Staging (preparando)` y `Undoing with git restore`. Estos también
 fueron completados y documentados, por lo que en total se realizaron 36
 niveles.
-
-<a id="niveles-obligatorios-de-principal"></a>
 
 ### Niveles obligatorios de Principal
 
@@ -2357,8 +2361,6 @@ niveles.
 | M5.2 | 19 | Múltiples padres | ✅ Completado |
 | M5.3 | 20 | Ensalada de ramas | ✅ Completado |
 
-<a id="niveles-obligatorios-de-remota"></a>
-
 ### Niveles obligatorios de Remota
 
 | ID de la guía | Nivel en la interfaz utilizada | Nombre | Estado |
@@ -2380,8 +2382,6 @@ niveles.
 | R2.7 | 15 | Origen de nada | ✅ Completado |
 | R2.8 | 16 | Parámetros de pull | ✅ Completado |
 
-<a id="niveles-adicionales-encontrados-en-la-interfaz"></a>
-
 ### Niveles adicionales encontrados en la interfaz
 
 | Nivel | Nombre | Estado |
@@ -2392,3 +2392,275 @@ niveles.
 **Resumen:** 34/34 niveles requeridos completados y documentados, más 2 niveles
 adicionales presentes en la versión utilizada de la plataforma, para un total
 de 36 niveles completados.
+
+## Síntesis de conceptos aprendidos
+
+La resolución de los niveles de Learn Git Branching permitió comprender Git
+como un sistema de referencias que apuntan a commits y no solamente como una
+colección de comandos aislados. En los primeros niveles se observó cómo cada
+commit forma parte de un historial y cómo las ramas se comportan como
+referencias móviles. Crear, cambiar y mover ramas permitió entender la relación
+entre `HEAD`, la rama activa y el commit actual. También fue importante
+trabajar con `HEAD` desacoplado y con referencias relativas como `^` y `~`,
+porque estas herramientas permiten navegar por el historial sin depender de
+identificadores completos.
+
+Uno de los conceptos centrales fue la diferencia entre integrar y reescribir
+historial. Con `merge` se conservan las líneas de desarrollo existentes y,
+cuando es necesario, se crea un commit con dos padres que representa la unión.
+En cambio, `rebase` reaplica commits sobre una nueva base y genera nuevas
+versiones de ellos. Los niveles de rebase interactivo, `cherry-pick` y
+`commit --amend` reforzaron la idea de que los commits no se modifican
+directamente: al reorganizar o corregir el historial se crean nuevos commits
+con identidades diferentes. Los niveles adicionales sobre el área de staging
+y `git restore` también ayudaron a distinguir entre cambios del directorio de
+trabajo, cambios preparados y contenido ya confirmado. Esto permitió comprender
+mejor qué información modifica cada comando antes de realizar un commit.
+
+Los ejercicios de `reset` y `revert` mostraron dos formas diferentes de
+deshacer cambios. `reset` resulta apropiado para mover una rama cuando los
+cambios todavía son locales, mientras que `revert` conserva el historial y
+agrega un nuevo commit que deshace otro, por lo que es una alternativa más
+segura para cambios ya compartidos. También se utilizaron tags para marcar
+puntos específicos del historial y `git describe` para relacionar commits con
+etiquetas cercanas.
+
+La sección Remota amplió estos conceptos al introducir la relación entre el
+repositorio local y el remoto. Se distinguió entre una rama local, una rama
+existente en el servidor y una referencia de seguimiento remoto como `o/main`,
+que Learn Git Branching utiliza como representación de `origin/main`.
+`git fetch` permitió actualizar el conocimiento local del remoto sin integrar
+cambios; `git pull` combinó la descarga con una integración; y `git push`
+publicó cambios locales en el repositorio remoto.
+
+Los últimos niveles mostraron usos más precisos de los parámetros de `fetch`,
+`push` y `pull`. La sintaxis `<origen>:<destino>` permitió seleccionar
+explícitamente qué referencia debía copiarse y hacia dónde. Fue especialmente
+útil observar que, dentro del simulador, usar directamente identificadores como
+`C3` o `C6` permitía alcanzar ciertos estados sin mover referencias como
+`o/main` u `o/foo`.
+
+En conjunto, los ejercicios permitieron pasar de entender Git como una
+secuencia de comandos a visualizar el efecto que cada operación tiene sobre
+commits, ramas, `HEAD` y referencias remotas. Learn Git Branching resultó útil
+porque representa gráficamente estos cambios y permite experimentar con
+historiales complejos antes de aplicar las mismas ideas en un repositorio real.
+
+## Análisis obligatorio de Git
+
+### 1. ¿Cuál es la diferencia entre `merge` y `rebase`? ¿Qué ocurre con el historial en cada caso?
+
+Tanto `merge` como `rebase` permiten integrar trabajo proveniente de líneas de
+desarrollo diferentes, pero modifican el historial de manera distinta.
+
+`git merge` conserva las ramas y los commits originales. Cuando las ramas han
+divergido, crea un nuevo commit de merge con dos padres que representa la unión
+de ambos historiales. Esto se observó en el Nivel 3 de Principal: `bugFix`
+avanzó hasta `C2`, mientras `main` avanzó independientemente hasta `C3`.
+Al ejecutar `git merge bugFix`, se creó `C4`, cuyos padres fueron `C3` y `C2`.
+Por lo tanto, la estructura ramificada del historial se mantuvo visible.
+
+`git rebase`, en cambio, cambia la base sobre la cual se encuentran los commits
+de una rama. En el Nivel 4, el commit `C2` de `bugFix` fue reaplicado encima de
+`C3`, perteneciente a `main`, produciendo una nueva versión `C2'`. El resultado
+fue un historial lineal:
+
+`C0 → C1 → C3 → C2'`
+
+La diferencia principal es que `merge` preserva explícitamente la historia de
+las ramas y puede agregar commits de unión, mientras que `rebase` reescribe una
+parte del historial para producir una secuencia lineal y genera nuevos commits
+con identificadores diferentes.
+
+### 2. ¿Cuándo conviene utilizar `reset` y cuándo `revert`?
+
+`git reset` resulta apropiado principalmente cuando se desea modificar
+historial que todavía es local y no ha sido compartido. El comando mueve una
+referencia de rama hacia otro commit, haciendo que determinados commits dejen
+de formar parte de la línea activa de esa rama.
+
+Esto se observó en el Nivel 8 de Principal, donde la rama `local` se encontraba
+en `C3`. Mediante:
+
+`git reset HEAD^`
+
+la rama regresó a `C1`, eliminando `C3` de su historial activo.
+
+`git revert`, en cambio, es más apropiado cuando el cambio ya ha sido
+compartido. En lugar de eliminar el commit original, crea un nuevo commit que
+aplica el cambio inverso. En el mismo nivel, `git revert HEAD` aplicado sobre
+`C2` produjo `C2'`, conservando `C2` dentro del historial.
+
+Por lo tanto, `reset` es útil para corregir historial privado o local, mientras
+que `revert` es más seguro para historial compartido porque no elimina ni
+reescribe commits que otras personas podrían tener como referencia.
+
+### 3. ¿Qué significa tener `HEAD` separado o *detached*?
+
+Normalmente, `HEAD` se encuentra asociado a una rama y representa la posición
+actual de trabajo. Cuando se crea un commit en esta situación, la rama activa
+avanza automáticamente hasta el nuevo commit.
+
+Un estado *detached HEAD* ocurre cuando `HEAD` apunta directamente a un commit
+en lugar de hacerlo indirectamente mediante una rama.
+
+En el Nivel 5 de Principal se ejecutó:
+
+`git checkout C4`
+
+Esto hizo que `HEAD` apuntara directamente a `C4`, mientras que la rama
+`bugFix` permaneció también apuntando a ese commit. Aunque inicialmente ambas
+referencias estaban en el mismo lugar, `HEAD` ya no estaba asociado a
+`bugFix`.
+
+Este concepto volvió a aparecer al trabajar con referencias de seguimiento
+remoto. Por ejemplo, hacer checkout de `o/main` posicionó `HEAD` directamente
+sobre el commit representado por esa referencia.
+
+Un *detached HEAD* resulta útil para inspeccionar un punto específico del
+historial o realizar operaciones temporales. Sin embargo, si se desea conservar
+trabajo nuevo realizado desde esa posición, normalmente conviene crear una rama
+que lo mantenga referenciado.
+
+### 4. ¿Qué diferencia existe entre una rama local, una rama remota y una rama de seguimiento remoto?
+
+Una **rama local** existe dentro del repositorio de trabajo y puede utilizarse
+directamente para desarrollar. Por ejemplo, `main`, `bugFix`, `foo` o `side`
+fueron ramas locales utilizadas durante los niveles.
+
+Una **rama remota** corresponde a una rama existente en el repositorio ubicado
+en el servidor. Esta no cambia simplemente porque se creen commits en el
+repositorio local; debe actualizarse mediante operaciones como `push`.
+
+Una **referencia de seguimiento remoto** es una referencia almacenada
+localmente que representa la última posición conocida de una rama del
+repositorio remoto. Learn Git Branching utiliza, por ejemplo:
+
+`o/main`
+
+como abreviatura pedagógica de:
+
+`origin/main`
+
+En el Nivel 2 de Remota fue posible tener simultáneamente `main` local en una
+posición, `o/main` en otra y `main` del repositorio remoto en otra diferente.
+Esto demuestra que son referencias distintas.
+
+Las referencias de seguimiento remoto normalmente se actualizan cuando existe
+comunicación con el remoto, por ejemplo mediante `fetch`, mientras que los
+commits locales por sí solos no las mueven.
+
+### 5. ¿Qué hacen individualmente `fetch`, `merge`, `pull` y `push`?
+
+`git fetch` obtiene del repositorio remoto commits y referencias que todavía no
+se conocen localmente. También actualiza las referencias de seguimiento remoto,
+pero no integra automáticamente esos cambios en las ramas locales. En el Nivel
+3 de Remota, `fetch` actualizó `o/main` y `o/bugFix` sin mover las ramas locales
+`main` y `bugFix`.
+
+`git merge` integra otra línea de desarrollo en la rama activa. Cuando las
+ramas han divergido, puede producir un nuevo commit con dos padres.
+
+`git pull`, en los ejercicios de Learn Git Branching, puede entenderse como
+obtener primero los cambios mediante `fetch` y luego integrarlos mediante
+`merge`. En el Nivel 4 de Remota, el remoto había avanzado hasta `C3` y la rama
+local se encontraba en `C2`; `git pull` obtuvo el cambio remoto y creó el merge
+commit `C4`.
+
+`git push` realiza la operación en la dirección contraria: publica referencias
+o commits locales en el repositorio remoto. Por ejemplo, en los niveles de
+parámetros de `push` se utilizaron comandos como `git push origin main` y
+`git push origin foo`.
+
+Por lo tanto, `fetch` trae información sin integrarla, `merge` integra
+historiales, `pull` obtiene e integra y `push` publica trabajo local en el
+remoto.
+
+### 6. ¿Qué riesgos existen al reescribir un historial que ya fue compartido?
+
+Operaciones como `rebase`, `commit --amend` y ciertos usos de `reset` pueden
+reescribir el historial porque producen nuevos commits o cambian qué commits
+pertenecen a la línea activa de una rama.
+
+En Learn Git Branching esto se observa claramente mediante los apóstrofes. Por
+ejemplo, durante un rebase el commit `C2` puede convertirse en `C2'`. Aunque
+ambos representan cambios relacionados, no son el mismo commit.
+
+Si el commit original ya fue compartido y otras personas han construido
+trabajo encima de él, reescribirlo puede provocar que existan dos versiones
+diferentes del mismo historial. Esto puede generar divergencias y dificultar
+posteriores operaciones de integración.
+
+Por esta razón, resulta más seguro utilizar operaciones que preserven el
+historial, como `merge` o `revert`, cuando se trabaja con commits que ya fueron
+publicados. El rebase y otras formas de reescritura son especialmente útiles
+para organizar trabajo propio antes de compartirlo, pero deben utilizarse con
+cuidado sobre ramas compartidas.
+
+### 7. ¿Para qué resultan útiles `cherry-pick`, las referencias relativas y los tags?
+
+`git cherry-pick` permite seleccionar commits específicos y reaplicar sus
+cambios en la rama actual sin tener que integrar toda la rama de la que
+provienen. En el Nivel 9 de Principal se utilizó:
+
+`git cherry-pick C3 C4 C7`
+
+para copiar únicamente esos tres cambios sobre `main`.
+
+Las referencias relativas permiten localizar commits a partir de otra
+referencia conocida. El operador `^` permite acceder a un padre, mientras que
+`~` permite desplazarse varias generaciones hacia atrás. También se utilizó
+`^2` para seleccionar el segundo padre de un commit de merge. Esto permite
+navegar historiales complejos sin conocer directamente el identificador de cada
+commit.
+
+Los tags permiten asignar nombres permanentes a commits importantes. En el
+Nivel 16 se crearon `v0` y `v1` para marcar commits específicos. A diferencia
+de una rama, un tag no avanza automáticamente cuando se crean nuevos commits,
+por lo que es especialmente útil para identificar versiones, entregas o puntos
+significativos del proyecto.
+
+En conjunto, estas herramientas permiten seleccionar, localizar e identificar
+con precisión partes específicas del historial.
+
+### 8. ¿Qué diferencias identificó entre el simulador y un repositorio Git real?
+
+Learn Git Branching simplifica varios elementos de Git con el propósito de
+mostrar visualmente el efecto de los comandos.
+
+La primera diferencia es la representación de los commits. El simulador utiliza
+identificadores sencillos como `C0`, `C1`, `C2` y versiones como `C2'` cuando
+un commit es reescrito. En un repositorio Git real, los commits se identifican
+mediante hashes y una operación como `rebase` genera un nuevo hash, no un
+identificador con apóstrofes.
+
+El simulador también utiliza la abreviatura `o/` para representar `origin/`.
+Por ejemplo:
+
+`o/main`
+
+representa conceptualmente a:
+
+`origin/main`
+
+Esto permite visualizar fácilmente las referencias de seguimiento remoto.
+
+Además, existen comandos creados específicamente para la simulación. Un ejemplo
+es:
+
+`git fakeTeamwork`
+
+utilizado para simular que otra persona realiza commits en el repositorio
+remoto. Este comando no existe en Git real.
+
+También se observaron comportamientos diseñados para alcanzar estados gráficos
+muy específicos. Por ejemplo, en los niveles avanzados de `fetch` y `pull`
+fue necesario utilizar identificadores como `C3` o `C6` directamente para
+evitar que el simulador moviera determinadas referencias `o/*`.
+
+Por último, Learn Git Branching presenta inmediatamente un árbol gráfico y un
+estado objetivo después de cada comando. En un repositorio real esa información
+debe inspeccionarse con herramientas como `git status`, `git log`,
+`git branch`, `git remote` o interfaces gráficas. El simulador, por lo tanto,
+no sustituye completamente el uso de Git real, pero facilita comprender primero
+la estructura del historial y el efecto conceptual de cada operación.
