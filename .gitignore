@@ -26,3 +26,11 @@ Thumbs.db
 _build/
 build/
 dist/
+
+# Generated documentation sites
+site/cpp/*
+site/python/*
+
+# Keep directory placeholders
+!site/cpp/.gitkeep
+!site/python/.gitkeep
